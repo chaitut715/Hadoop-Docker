@@ -36,7 +36,7 @@ services:
       SERVICE_PRECONDITION: "namenode:9870"
     env_file:
       - ./hadoop.env
-  
+
   resourcemanager:
     image: resourcemanager:latest
     container_name: resourcemanager
@@ -66,7 +66,7 @@ services:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
     env_file:
       - ./hadoop.env
-  
+
   historyserver:
     image: historyserver:latest
     container_name: historyserver
@@ -83,7 +83,7 @@ services:
       - hadoop_historyserver:/hadoop/yarn/timeline
     env_file:
       - ./hadoop.env
-  
+
   zoo:
     image: zookeeper:3.4.10
     container_name: zoo
@@ -96,6 +96,9 @@ services:
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888
+    volumes:
+      - zkdata:/data
+      - zkdatalog:/datalog
 
   hbase-master:
     image: hbase-master:latest
@@ -180,7 +183,7 @@ services:
       - 5432:5432
     volumes:
       - postgresql_metastore:/var/lib/postgresql/data
-    environment: 
+    environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_PASSWORD=password
 
@@ -189,6 +192,8 @@ volumes:
   hadoop_datanode:
   hadoop_historyserver:
   postgresql_metastore:
+  zkdata:
+  zkdatalog:
 
 networks:
   hadoop-network:
